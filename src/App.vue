@@ -1,23 +1,20 @@
 <template>
 	<b-container>
 		<h1>Covid tracker</h1>
-		<ct-table></ct-table>
+		<Table></Table>
+		<Pagination></Pagination>
 	</b-container>
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 import Table from './components/UI/Table.vue';
+import Pagination from './components/UI/Pagination.vue';
 export default {
 	name: 'App',
 	components: {
-		ctTable: Table,
-	},
-	created() {
-		axios.get('https://data.covid19india.org/v4/min/data.min.json').then(({ data }) => {
-			console.log(data);
-			this.$store.dispatch('initialize', data);
-		});
+		Table,
+		Pagination,
 	},
 };
 </script>

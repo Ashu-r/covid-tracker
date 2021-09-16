@@ -5,6 +5,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 	state: {
 		data: null,
+		currentPage: 1,
 	},
 	mutations: {
 		initialize(state, payload) {
@@ -15,6 +16,9 @@ const store = new Vuex.Store({
 			console.log(cleanedData);
 			state.data = cleanedData;
 		},
+		changePage(state, page) {
+			state.currentPage = page;
+		},
 	},
 	actions: {
 		initialize({ commit }, payload) {
@@ -24,6 +28,9 @@ const store = new Vuex.Store({
 	getters: {
 		totalCases: (state) => {
 			return state.data;
+		},
+		currentPage: (state) => {
+			return state.currentPage;
 		},
 	},
 });

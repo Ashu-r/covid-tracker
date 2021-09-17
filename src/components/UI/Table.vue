@@ -1,34 +1,35 @@
 <template>
-	<b-table
-		id="covid-data"
-		striped
-		bordered
-		hover
-		:sort-by.sync="sortBy"
-		:sort-desc.sync="sortDesc"
-		:items="items"
-		:per-page="10"
-		:current-page="currentPage"
-		:fields="fields"
-	></b-table>
+	<div>
+		<b-table
+			id="covid-data"
+			striped
+			bordered
+			hover
+			label-sort-asc=""
+			label-sort-desc=""
+			:sort-desc.sync="sortDesc"
+			:items="items"
+			:per-page="10"
+			:current-page="currentPage"
+			:fields="fields"
+		></b-table>
+	</div>
 </template>
 
 <script>
-import axios from 'axios';
 export default {
 	data() {
 		return {
-			sortBy: 'State',
-			sortDesc: false,
-			// fields: [
-			// 	{ key: 'State', sortable: true },
-			// 	{ key: 'Confirmed', sortable: true },
-			// 	{ key: 'Deceased', sortable: true },
-			// 	{ key: 'Recovered', sortable: true },
-			// 	{ key: 'Tested', sortable: true },
-			// 	{ key: 'Vaccinated1', sortable: true },
-			// 	{ key: 'Vaccinated2', sortable: true },
-			// ],
+			sortDesc: true,
+			fields: [
+				{ key: 'state', sortable: false },
+				{ key: 'confirmed', sortable: true },
+				{ key: 'deceased', sortable: true },
+				{ key: 'recovered', sortable: true },
+				{ key: 'tested', sortable: true },
+				{ key: 'vaccinated1', sortable: true },
+				{ key: 'vaccinated2', sortable: true },
+			],
 		};
 	},
 	computed: {
@@ -38,13 +39,6 @@ export default {
 		items() {
 			return this.$store.getters.totalCases;
 		},
-	},
-	created() {
-		console.log('created');
-		axios.get('https://data.covid19india.org/v4/min/data.min.json').then(({ data }) => {
-			console.log(data);
-			this.$store.dispatch('initialize', data);
-		});
 	},
 	methods: {
 		update() {

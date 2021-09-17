@@ -12,7 +12,7 @@ export default {
 	},
 	computed: {
 		rows() {
-			return this.$store.getters.totalCases ? this.$store.getters.totalCases.length : 1;
+			return this.$store.getters.mainData ? this.$store.getters.mainData.length : 1;
 		},
 	},
 	methods: {

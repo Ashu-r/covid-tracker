@@ -39,7 +39,6 @@ const store = new Vuex.Store({
 			return state.data.filter((item) => stateArray.includes(item.state));
 		},
 		filterProperties: (state) => (filterObject) => {
-			let filteredData = state;
 			const comparisonOperatorsHash = {
 				'<': function(a, b) {
 					return a < b;
@@ -51,19 +50,9 @@ const store = new Vuex.Store({
 					return a === b;
 				},
 			};
-			// console.log(filterObject);
-			if (filterObject?.states?.length > 0) {
-				console.log(filterObject.states);
-				filteredData = state.data.filter((item) => filterObject.states.includes(item.state));
-				// console.log(filteredData);
-			}
-			if (filterObject?.numericFilters && Object.values(filterObject.numericFilters).some((o) => o === null)) {
-				const comparisonOperator = comparisonOperatorsHash[filterObject.numericFilters.operation];
-
-				console.log('n filter');
-				filteredData = state.data.filter((item) => comparisonOperator(item[filterObject.numericFilters.property], filterObject.numericFilters.value));
-			}
-			return filteredData;
+			console.log(filterObject);
+			const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
+			return state.data.filter((item) => comparisonOperator(item[filterObject.property], filterObject.value));
 		},
 	},
 });

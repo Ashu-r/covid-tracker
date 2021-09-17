@@ -35,7 +35,6 @@ export default {
 				{ key: 'vaccinated2', sortable: true },
 			],
 			options: this.$store.getters.stateNames,
-			filterParameters: { states: [], numericFilters: {} },
 		};
 	},
 	computed: {
@@ -48,23 +47,19 @@ export default {
 	},
 	methods: {
 		stateChanged(value) {
-			this.filterParameters = { states: this.filterParameters.states.concat(value), ...this.filterParameters };
 			if (value.length > 0) {
 				console.log(value);
-				this.stateData = this.$store.getters.filterProperties(this.filterParameters);
+				this.stateData = this.$store.getters.filterStates(value);
 				return;
 			}
 			this.stateData = this.$store.getters.mainData;
 		},
 		numericChange(filterObject) {
 			if (Object.values(filterObject).some((o) => o === null)) {
-				this.stateData = this.$store.getters.filterProperties(this.filterParameters);
+				this.stateData = this.$store.getters.mainData;
 				return;
 			}
-			this.filterParameters = { numericFilters: filterObject, ...this.filterParameters };
-			console.log(this.filterParameters);
-
-			this.stateData = this.$store.getters.filterProperties(this.filterParameters);
+			this.stateData = this.$store.getters.filterProperties(filterObject);
 		},
 	},
 	components: {

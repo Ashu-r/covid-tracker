@@ -10,7 +10,7 @@
 import axios from 'axios';
 import Table from './components/UI/Table.vue';
 import Pagination from './components/UI/Pagination.vue';
-import Loading from './components/Loading.vue';
+import Loading from './components/UI/Loading.vue';
 export default {
 	name: 'App',
 	data() {

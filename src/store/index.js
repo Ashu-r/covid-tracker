@@ -13,7 +13,6 @@ const store = new Vuex.Store({
 				state: key,
 				...payload[key].total,
 			}));
-			console.log(cleanedData);
 			state.data = cleanedData;
 		},
 		changePage(state, page) {

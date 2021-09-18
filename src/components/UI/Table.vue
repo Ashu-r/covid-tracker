@@ -73,7 +73,6 @@ export default {
 		},
 		filterNumeric(data, filterObject) {
 			// Filteres numerical values specified according to object
-			console.log(filterObject);
 			if (Object.values(filterObject).some((o) => o === null)) {
 				return data;
 			}
@@ -88,7 +87,6 @@ export default {
 					return a === b;
 				},
 			};
-			console.log(filterObject);
 			const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
 			return data.filter((item) => comparisonOperator(Number(item[filterObject.property]), Number(filterObject.value)));
 		},

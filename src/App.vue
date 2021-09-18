@@ -19,7 +19,6 @@ export default {
 		};
 	},
 	created() {
-		console.log('created');
 		axios.get('https://data.covid19india.org/v4/min/data.min.json').then(({ data }) => {
 			this.$store.dispatch('initialize', data);
 			this.hasLoaded = true;

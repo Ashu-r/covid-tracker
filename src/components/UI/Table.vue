@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<FilterTable :options="options" @filter="filterTableData" />
+		<FilterTable :options="stateNames" @filter="filterTableData" />
 		<b-table
 			id="covid-data"
 			striped
@@ -34,7 +34,7 @@ export default {
 				{ key: 'vaccinated1', sortable: true },
 				{ key: 'vaccinated2', sortable: true },
 			],
-			options: this.$store.getters.stateNames,
+			stateNames: this.$store.getters.stateNames,
 			filterProperties: {},
 		};
 	},
@@ -50,6 +50,9 @@ export default {
 		filterTableData(obj) {
 			let filteredData = this.$store.getters.mainData;
 			if (obj.type === 'states') {
+				if (obj.states.length < 1) {
+					obj.states = this.stateNames;
+				}
 				filteredData = filteredData.filter((item) => obj.states.includes(item.state));
 				this.filterProperties.states = obj.states;
 				// eslint-disable-next-line no-prototype-builtins
@@ -70,6 +73,7 @@ export default {
 		},
 		filterNumeric(data, filterObject) {
 			// Filteres numerical values specified according to object
+			console.log(filterObject);
 			if (Object.values(filterObject).some((o) => o === null)) {
 				return data;
 			}
@@ -86,7 +90,7 @@ export default {
 			};
 			console.log(filterObject);
 			const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
-			return data.filter((item) => comparisonOperator(item[filterObject.property], filterObject.value));
+			return data.filter((item) => comparisonOperator(Number(item[filterObject.property]), Number(filterObject.value)));
 		},
 	},
 	components: {

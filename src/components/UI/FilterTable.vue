@@ -34,7 +34,7 @@ export default {
 	computed: {},
 	methods: {
 		stateChanged(value) {
-			this.$emit('stateChanged', value);
+			this.$emit('filter', { type: 'states', states: value });
 		},
 		numericFilterChanged(value, name) {
 			this[name] = value;
@@ -48,12 +48,12 @@ export default {
 		},
 		clearAll() {
 			this.clearNumeric();
-			this.$emit('stateChanged', []);
-			this.$emit('clearAll');
+			this.states = [];
+			this.$emit('filter', {});
 		},
 		emitNumericChange() {
-			const changedObject = { property: this.property, operation: this.operation, value: this.value };
-			this.$emit('numericChange', changedObject);
+			const changedObject = { type: 'numeric', numericParams: { property: this.property, operation: this.operation, value: this.value } };
+			this.$emit('filter', changedObject);
 		},
 	},
 };

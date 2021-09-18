@@ -35,25 +35,6 @@ const store = new Vuex.Store({
 		stateNames: (state) => {
 			return state?.data?.map((item) => item.state);
 		},
-		filterStates: (state) => (stateArray) => {
-			return state.data.filter((item) => stateArray.includes(item.state));
-		},
-		filterProperties: (state) => (filterObject) => {
-			const comparisonOperatorsHash = {
-				'<': function(a, b) {
-					return a < b;
-				},
-				'>': function(a, b) {
-					return a > b;
-				},
-				'=': function(a, b) {
-					return a === b;
-				},
-			};
-			console.log(filterObject);
-			const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
-			return state.data.filter((item) => comparisonOperator(item[filterObject.property], filterObject.value));
-		},
 	},
 });
 

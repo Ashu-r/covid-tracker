@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<FilterTable :options="options" @stateChanged="stateChanged" @numericChange="numericChange" />
+		<FilterTable :options="options" @filter="filterTableData" />
 		<b-table
 			id="covid-data"
 			striped
@@ -35,6 +35,7 @@ export default {
 				{ key: 'vaccinated2', sortable: true },
 			],
 			options: this.$store.getters.stateNames,
+			filterProperties: {},
 		};
 	},
 	computed: {
@@ -46,20 +47,46 @@ export default {
 		},
 	},
 	methods: {
-		stateChanged(value) {
-			if (value.length > 0) {
-				console.log(value);
-				this.stateData = this.$store.getters.filterStates(value);
-				return;
+		filterTableData(obj) {
+			let filteredData = this.$store.getters.mainData;
+			if (obj.type === 'states') {
+				filteredData = filteredData.filter((item) => obj.states.includes(item.state));
+				this.filterProperties.states = obj.states;
+				// eslint-disable-next-line no-prototype-builtins
+				if (Object.prototype.hasOwnProperty.call(this.filterProperties, 'numeric')) {
+					filteredData = this.filterNumeric(filteredData, this.filterProperties.numeric);
+				}
 			}
-			this.stateData = this.$store.getters.mainData;
+			if (obj.type === 'numeric') {
+				filteredData = this.filterNumeric(filteredData, obj.numericParams);
+
+				this.filterProperties.numeric = obj.numericParams;
+				// eslint-disable-next-line no-prototype-builtins
+				if (Object.prototype.hasOwnProperty.call(this.filterProperties, 'states')) {
+					filteredData = filteredData.filter((item) => this.filterProperties.states.includes(item.state));
+				}
+			}
+			this.stateData = filteredData;
 		},
-		numericChange(filterObject) {
+		filterNumeric(data, filterObject) {
+			// Filteres numerical values specified according to object
 			if (Object.values(filterObject).some((o) => o === null)) {
-				this.stateData = this.$store.getters.mainData;
-				return;
+				return data;
 			}
-			this.stateData = this.$store.getters.filterProperties(filterObject);
+			const comparisonOperatorsHash = {
+				'<': function(a, b) {
+					return a < b;
+				},
+				'>': function(a, b) {
+					return a > b;
+				},
+				'=': function(a, b) {
+					return a === b;
+				},
+			};
+			console.log(filterObject);
+			const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
+			return data.filter((item) => comparisonOperator(item[filterObject.property], filterObject.value));
 		},
 	},
 	components: {

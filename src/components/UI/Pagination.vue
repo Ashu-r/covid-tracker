@@ -10,11 +10,12 @@ export default {
 			perPage: 10,
 		};
 	},
-	computed: {
-		rows() {
-			return this.$store.getters.mainData ? this.$store.getters.mainData.length : 1;
-		},
-	},
+	props: ['rows'],
+	// computed: {
+	// 	rows() {
+	// 		return this.$store.getters.mainData ? this.$store.getters.mainData.length : 1;
+	// 	},
+	// },
 	methods: {
 		handlePageChange(value) {
 			this.$store.commit('changePage', value);

@@ -14,11 +14,13 @@
 			:current-page="currentPage"
 			:fields="fields"
 		></b-table>
+		<Pagination :rows="rows"></Pagination>
 	</div>
 </template>
 
 <script>
 import FilterTable from './FilterTable.vue';
+import Pagination from './Pagination.vue';
 import { filterNumeric } from '../../utils';
 
 export default {
@@ -46,6 +48,9 @@ export default {
 		currentPage() {
 			return this.$store.getters.currentPage;
 		},
+		rows() {
+			return this.stateData.length;
+		},
 	},
 	methods: {
 		filterTableData(obj) {
@@ -72,28 +77,10 @@ export default {
 			}
 			this.stateData = filteredData;
 		},
-		// filterNumeric(data, filterObject) {
-		// 	// Filteres numerical values specified according to object
-		// 	if (Object.values(filterObject).some((o) => o === null)) {
-		// 		return data;
-		// 	}
-		// 	const comparisonOperatorsHash = {
-		// 		'<': function(a, b) {
-		// 			return a < b;
-		// 		},
-		// 		'>': function(a, b) {
-		// 			return a > b;
-		// 		},
-		// 		'=': function(a, b) {
-		// 			return a === b;
-		// 		},
-		// 	};
-		// 	const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
-		// 	return data.filter((item) => comparisonOperator(Number(item[filterObject.property]), Number(filterObject.value)));
-		// },
 	},
 	components: {
 		FilterTable,
+		Pagination,
 	},
 };
 </script>

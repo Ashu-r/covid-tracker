@@ -19,6 +19,7 @@
 
 <script>
 import FilterTable from './FilterTable.vue';
+import { filterNumeric } from '../../utils';
 
 export default {
 	data() {
@@ -57,11 +58,11 @@ export default {
 				this.filterProperties.states = obj.states;
 				// eslint-disable-next-line no-prototype-builtins
 				if (Object.prototype.hasOwnProperty.call(this.filterProperties, 'numeric')) {
-					filteredData = this.filterNumeric(filteredData, this.filterProperties.numeric);
+					filteredData = filterNumeric(filteredData, this.filterProperties.numeric);
 				}
 			}
 			if (obj.type === 'numeric') {
-				filteredData = this.filterNumeric(filteredData, obj.numericParams);
+				filteredData = filterNumeric(filteredData, obj.numericParams);
 
 				this.filterProperties.numeric = obj.numericParams;
 				// eslint-disable-next-line no-prototype-builtins
@@ -71,25 +72,25 @@ export default {
 			}
 			this.stateData = filteredData;
 		},
-		filterNumeric(data, filterObject) {
-			// Filteres numerical values specified according to object
-			if (Object.values(filterObject).some((o) => o === null)) {
-				return data;
-			}
-			const comparisonOperatorsHash = {
-				'<': function(a, b) {
-					return a < b;
-				},
-				'>': function(a, b) {
-					return a > b;
-				},
-				'=': function(a, b) {
-					return a === b;
-				},
-			};
-			const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
-			return data.filter((item) => comparisonOperator(Number(item[filterObject.property]), Number(filterObject.value)));
-		},
+		// filterNumeric(data, filterObject) {
+		// 	// Filteres numerical values specified according to object
+		// 	if (Object.values(filterObject).some((o) => o === null)) {
+		// 		return data;
+		// 	}
+		// 	const comparisonOperatorsHash = {
+		// 		'<': function(a, b) {
+		// 			return a < b;
+		// 		},
+		// 		'>': function(a, b) {
+		// 			return a > b;
+		// 		},
+		// 		'=': function(a, b) {
+		// 			return a === b;
+		// 		},
+		// 	};
+		// 	const comparisonOperator = comparisonOperatorsHash[filterObject.operation];
+		// 	return data.filter((item) => comparisonOperator(Number(item[filterObject.property]), Number(filterObject.value)));
+		// },
 	},
 	components: {
 		FilterTable,
